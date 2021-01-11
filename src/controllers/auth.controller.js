@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import models from '../database/models';
 import Response from '../services/response.service';
 import UserService from '../services/user.service';
+import TokenService from '../services/token.service';
 
 /**
  * AuthController class
@@ -20,23 +20,24 @@ class AuthController {
 			email: req.body.email,
 			password: hash,
 			gender: req.body.gender,
-			birth_date: req.body.bith_date
+			birth_date: req.body.birth_date,
+			location: req.body.location
 		});
-
-		const userToken = auth.generateToken(user);
-		// return res.status(201).json({
-		// 	status: 'success',
 		const data = {
 			id: user.id,
-			first_name: user.firstname,
+			first_name: user.first_name,
 			last_name: user.last_name,
 			email: user.email,
 			gender: user.gender,
 			birth_date: user.birth_date,
 			isVerified: user.isVerified,
-			token: userToken
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
 		};
-		Response.successMessage(201, 'User Sucessfully created', data);
+		Response.successMessage(201, 'User Sucessfully created', {
+			user: data,
+			token: TokenService.generateToken(data),
+		});
 		return Response.send(res);
 	}
 }
