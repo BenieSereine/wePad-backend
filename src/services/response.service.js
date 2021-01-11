@@ -20,7 +20,7 @@ class Response {
    * @param {string} message
    * @return {object} setting the error message
    */
-	static errorMesage(statusCode, message) {
+	static errorMessage(statusCode, message) {
 		this.statusCode = statusCode;
 		this.message = message;
 		this.type = 'error';
